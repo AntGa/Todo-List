@@ -1,0 +1,35 @@
+ <!--form to ask user to enter the task details -->
+    <form action="/" method="post">
+         <!-- Enter the task -->
+        Enter Task:
+         <div class="form-floating mb-3">
+            <input class="form-control" name="task"id="task" type="text" placeholder="Enter New Task:" data-sb-validations="required" />
+        </div>
+         <!-- Enter the subject -->
+        <div class="form-floating mb-3">
+            <!-- grabs subjects from subjects_table and displays them -->
+            Select Subject:
+            <select class="form-select" name="subject" id="subject" aria-label="Select Subject">
+                {% for row in rows4 %}
+                <option value="{{row[0]}}">{{row[0]}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-floating mb-3">
+             <!--Enter priority of the task -->
+             Enter priority:
+            <select class="form-select" id="priority" name="priority" aria-label="Priority">
+                <option value="High">High</option>
+                <option value="Low">Low</option>
+            </select>
+        </div>
+         <!-- Enter extra details -->
+        <div class="form-floating mb-3">
+            <textarea class="form-control" id="extra_notes" name="extra_notes" type="text" placeholder="Extra notes about task:" style="height: 10rem;"></textarea>
+        </div>
+        <div align="right" class="d-grid">
+            <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button>
+            <input name="status" id="status" type="hidden" value="Incomplete"/>
+        </div>
+        
+    </form>

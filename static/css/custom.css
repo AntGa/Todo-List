@@ -1,0 +1,88 @@
+
+
+.container {
+    border: 2px solid red; 
+    margin: 40px 0 0 0;
+}
+
+/** r = row and c = column **/
+/** this css is for the table that displays the tasks**/
+
+#r1 {
+    height: 50px;
+    margin: 10px 10px 20px 10px;
+}
+
+#r1c1 {
+    border: 1px solid rgb(255, 177, 238);
+}
+
+#r1c2 {
+    border: 1px solid rgb(255, 233, 40);
+}
+
+#r2 {
+    margin: 10px
+
+}
+
+#r2c1 {
+    border: 1px solid black;
+    
+}
+
+#r2c2 {
+    border: 1px solid black;
+ 
+}
+
+/** button colour**/
+
+.btn-res {
+    background-color: #ff36ff !important;
+    color: white !important;
+}
+
+.btn-eng {
+    background-color: #6a00f5 !important;
+    color: white !important;
+}
+
+.useraccount {
+    margin-left: 4px;
+}
+
+.form-container {
+    width: 600px;
+    text-align: center;
+    margin: 50px auto 0px auto;
+    border:  2px solid blueviolet;
+    padding: 20px 50px 50px 50px; 
+}   
+/** make error text red**/
+
+.msg {
+    color: red;
+    font-weight: 'bold';
+    margin-bottom: 10px;
+}
+form ul li {
+    list-style: none;
+
+}
+
+.gap{
+  margin-bottom: 4px;
+}
+
+/** this css the login screen so the form displays above the background**/
+
+#zMidCenter {
+    z-index: 10000;
+    position: absolute;
+    top: 20%;
+    left: 35%;
+    background-color: blanchedalmond;
+}
+
+

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Anton Garay 2021">
+
+       <!-- Bootstrap CSS -->
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+       <!-- Custom CSS -->
+       <link href="http://localhost:5000/static/css/custom.css" rel="stylesheet">
+     
+       <!-- Bootstrap JS-->
+   
+       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+       <!-- Custom JS-->
+       <script type="text/javascript" src="../static/js/script.js"></script>
+       <!-- Font awesome import for custom logos-->
+       <script src="https://kit.fontawesome.com/1f77e15baa.js" crossorigin="anonymous"></script>
+        <title>Sacred Heart Todo List Home PageV1.4</title>
+
+      </head>
+    <body>
+        <div class="container">
+            <div class="row gy-5 mb-3 mt-3">
+                <div class="col-7">
+                    <div class="p-3 border bg-light">
+                        <div>
+                             <!-- Button to Open the Modal -->
+                            <button class="btn btn-success btn-lg btn-block add-task" type="button" >Add New Task</button> <!-- Add new task button -->
+                             
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5"> 
+                    <div class="p-3 border bg-light">
+                        <div class="dropdown text-center">
+                            <button type="button" class="btn btn-primary btn-lg dropdown-toggle" data-toggle="dropdown"> <!-- User name dropdown -->
+                                <span class="fas fa-user"></span> <!-- Logo from fontawesome -->
+                                <span class="useraccount"> Hello {{ session["first_name"] }} {{ session["last_name"] }}</span> <!-- User name  -->
+                            </button>
+                            <div class="dropdown-menu"> 
+                              <a class="dropdown-item" href="/logout">Logout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row gy-5 mb-3"> <!-- Subjects the user can sort their subjects by -->
+                <div class="col-3">
+                    <div class="p-3 border bg-light ">
+                        <div class="d-grid gap-2">
+
+                            {% for row in rows2 %}
+                            <!-- For each unique subject create a button -->
+                            <form action="/ajaxSubjectTask" method="post">
+                                <!-- SUBJECTS THAT USER CAN SELECT FROM -->
+                                <input class="btn btn-dark btn-lg btn-block gap" name="submitSubject"  value="{{row[0]}}"  type="submit" data-toggle="tooltip" data-placement="top" title="Click to see all tasks for a certain subject"/>
+                            </form>
+                            {% endfor %}
+                            
+                            <form action="/ajaxSubjectTask" method="post">
+                                <!-- ALL SUBJECTS BUTTON -->
+                                <input class="btn btn-info btn-lg btn-block" name="submit"  value="All Subjects"  type="submit" data-toggle="tooltip" data-placement="top" title="Click to see all tasks for every subject"/>
+                            </form>
+                            <span>Subject Filter</span>
+                        </div>
+                    </div> 
+                </div>
+                <div class="col-9"> <!-- Table that displays tasks  -->
+                    <div class="p-3 border bg-light">
+                        <table class="table table-striped table-bordered">
+                            <tr>
+                                <th width="8%">Status</th> <!-- Headers for table -->
+                                <th width="17%">Subject</th>
+                                <th width="50%">Task Name</th>
+                                <th width="10%">Priority</th>
+                                <th width="15%"></th>
+                            </tr>
+                            {% for row in rows %}
+                            <tr>
+                                <td>{{row[0]}}</td> <!--Table with values from the database-->
+                                <td>{{row[1]}}</td>
+                                <td>{{row[2]}}</td>
+                                <td>{{row[3]}}</td>
+                                <td>
+                                    <div class="col text-center"> 
+                                        <button type="submit" data-id= '{{row[4]}}' class="view-task btn btn-primary" data-toggle="tooltip" data-placement="top" title="Click to see Task Details or Edit them!" >View Details</button> 
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+            </div>      
+        </div>
+        <div align="center"> <a href="/"><span class="fas fa-home"></span></a>  <p>&copy; 2021 Anton To Do List App</p></div>
+
+       <!-- modal javascript -->
+  <script type='text/javascript'>
+    $(document).ready(function(){
+        $('.view-task').click(function(){
+            var taskid = $(this).data('id');
+            $.ajax({
+                url: '/ajaxViewTask',
+                type: 'post',
+                data: {taskid: taskid},
+                success: function(data){ 
+                    $('.modal-body').html(data); 
+                    $('.modal-body').append(data.htmlresponse);
+                    $('#ViewTaskModal').modal('show'); 
+                }
+            });
+        });
+            /**Button for Adding Tasks**/
+        $('.add-task').click(function(){
+            $.ajax({
+                url: '/ajaxAddTask',
+                success: function(data){ 
+                    $('.modal-body').html(data); 
+                    $('.modal-body').append(data.htmlresponse);
+                    $('#addTaskModal').modal('show'); 
+                }
+            });
+        });
+            /**Button for editing Tasks**/
+        $('.update_task').click(function(){
+            $.ajax({
+                url: '/ajaxUpdateTask',
+                success: function(data){ 
+                    $('.modal-body').html(data); 
+                    $('.modal-body').append(data.htmlresponse);
+                    $('#updateTaskModal').modal('show'); 
+                }
+            });
+        });
+        /**Button for deleting Tasks**/
+        $('.delete_task').click(function(){
+            $.ajax({
+                url: '/ajaxDeleteTask',
+                success: function(data){ 
+                    $('.modal-body').html(data); 
+                    $('.modal-body').append(data.htmlresponse);
+                }
+            });
+        });
+
+
+        
+    });
+    </script>
+    <!-- View Task Modal  -->
+<div class="modal fade" id="ViewTaskModal" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">View Task</h4>
+                  <button type="button" class="close" data-dismiss="modal">×</button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+</div>
+<!-- Add Task Modal  -->
+<div class="modal fade" id="addTaskModal" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add New Task</h4>
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Update Task Modal  -->
+<div class="modal fade" id="updateTaskModal" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Update / View Task</h4>
+              <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
